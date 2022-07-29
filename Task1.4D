@@ -31,12 +31,11 @@ void setup()
   //enable interrupts for port D
   PCICR |= 0b00000100;
   
-  //enable pullup resistor
-  PORTD |= (1 << PIR_PIN2);
+  
   //setting the led to output
   DDRD |= (1 << LED_PIN3);
   
-  //Enabling pin 4 for interrupts
+  //Enabling pin 4 for interrupts PCINT20 = pin 4
   PCMSK2 |= (1 << PCINT20);
   
   
@@ -59,6 +58,7 @@ ISR(INT1_vect)
   PORTD ^= (1 << LED_PIN);
 }
 
+//PCINT2 = pins D0 - D7
 ISR(PCINT2_vect)
 {
   PORTD ^= (1 << LED_PIN3);
