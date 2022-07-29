@@ -1,0 +1,65 @@
+// C++ code
+
+const uint8_t LED_PIN = 7;
+const uint8_t LED_PIN2 = 5;
+const uint8_t LED_PIN3 = 6;
+const uint8_t PIR_PIN = 3;
+const uint8_t BUT_PIN = 2;
+const uint8_t PIR_PIN2 = 4;
+
+void setup()
+{
+  //since it is an input we set to 1 to enable pullup resistor
+  PORTD |= (1 << BUT_PIN);
+  
+	
+  //Set LED pins to be output
+  DDRD |= (1 << LED_PIN2);
+  DDRD |= (1 << LED_PIN);
+  
+  //We set the 0th register to 1 cos the last two registers being 01 makes the
+  //interrupt trigger on any change in the pin.
+  EICRA |= (1 << ISC00);
+  EICRA |= (1 << ISC10);
+  
+  //Enables interrupts for INT0 and INT1
+  EIMSK |= (1 << INT0);
+  EIMSK |= (1 << INT1);
+  //sets bit 7 in the SREG register
+  sei();
+  
+  //enable interrupts for port D
+  PCICR |= 0b00000100;
+  
+  //enable pullup resistor
+  PORTD |= (1 << PIR_PIN2);
+  //setting the led to output
+  DDRD |= (1 << LED_PIN3);
+  
+  //Enabling pin 4 for interrupts
+  PCMSK2 |= (1 << PCINT20);
+  
+  
+  Serial.begin(9600);
+}
+
+void loop()
+{
+}
+  
+  ISR(INT0_vect)
+{
+  //XOR so that it only turns on while button is held
+  PORTD ^= (1 << LED_PIN2);
+}
+
+ISR(INT1_vect)
+{
+  //XOR so that when motion sensor pin goes back from high to low it turns off LED
+  PORTD ^= (1 << LED_PIN);
+}
+
+ISR(PCINT2_vect)
+{
+  PORTD ^= (1 << LED_PIN3);
+}
