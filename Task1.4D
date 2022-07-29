@@ -22,7 +22,7 @@ void setup()
   EICRA |= (1 << ISC00);
   EICRA |= (1 << ISC10);
   
-  //Enables interrupts for INT0 and INT1
+  //Enables interrupts for INT0(D2) and INT1(D3)
   EIMSK |= (1 << INT0);
   EIMSK |= (1 << INT1);
   //sets bit 7 in the SREG register
