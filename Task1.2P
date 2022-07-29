@@ -1,0 +1,30 @@
+// C++ code
+
+const uint8_t LED_PIN = 12;
+const uint8_t MOTION_PIN = 2;
+
+uint8_t led_state = LOW;
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(MOTION_PIN, INPUT);
+
+  
+  attachInterrupt(digitalPinToInterrupt(MOTION_PIN), pin_ISR, CHANGE);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  
+}
+
+void pin_ISR()
+{
+  led_state = !led_state;
+  digitalWrite(LED_PIN, led_state);
+  if (led_state == HIGH)
+  {
+	Serial.println("motion detected");
+  }
+}
