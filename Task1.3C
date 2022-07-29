@@ -1,0 +1,46 @@
+// C++ code
+
+const uint8_t LED_PIN = 12;
+const uint8_t LED_PIN2 = 13;
+const uint8_t PIR_PIN = 2;
+const uint8_t BUT_PIN = 3;
+
+uint8_t led_state = LOW;
+uint8_t led2_state = LOW;
+void setup()
+{
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(LED_PIN2, OUTPUT);
+  pinMode(PIR_PIN, INPUT);
+  pinMode(BUT_PIN, INPUT);
+	
+  
+  attachInterrupt(digitalPinToInterrupt(2), PIR_ISR, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(3), BUT_ISR, CHANGE);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  
+}
+
+void PIR_ISR()
+{
+  led_state = !led_state;
+  digitalWrite(LED_PIN, led_state);
+  if (led_state == HIGH)
+  {
+	Serial.println("motion detected");
+  }
+  
+}
+  void BUT_ISR()
+{
+  led2_state = !led2_state;
+  digitalWrite(LED_PIN2, led2_state);
+  if (led2_state == HIGH)
+  {
+	Serial.println("button pressed");
+  }
+}
