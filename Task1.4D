@@ -5,8 +5,8 @@ const uint8_t LED_PIN2 = 5;
 const uint8_t LED_PIN3 = 6;
 const uint8_t PIR_PIN = 3;
 const uint8_t BUT_PIN = 2;
-const uint8_t PIR_PIN2 = 4;
-
+const uint8_t SOIL_PIN = 4;
+const uint8_t TMP_PIN = A0;
 void setup()
 {
   //since it is an input we set to 1 to enable pullup resistor
@@ -28,6 +28,7 @@ void setup()
   //sets bit 7 in the SREG register
   sei();
   
+  
   //enable interrupts for port D
   PCICR |= 0b00000100;
   
@@ -35,9 +36,9 @@ void setup()
   //setting the led to output
   DDRD |= (1 << LED_PIN3);
   
+  
   //Enabling pin 4 for interrupts PCINT20 = pin 4
   PCMSK2 |= (1 << PCINT20);
-  
   
   Serial.begin(9600);
 }
@@ -46,7 +47,7 @@ void loop()
 {
 }
   
-  ISR(INT0_vect)
+ISR(INT0_vect)
 {
   //XOR so that it only turns on while button is held
   PORTD ^= (1 << LED_PIN2);
