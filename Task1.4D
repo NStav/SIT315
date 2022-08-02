@@ -14,28 +14,22 @@ void setup()
   
 	
   //Set LED pins to be output
-  DDRD |= (1 << LED_PIN2);
-  DDRD |= (1 << LED_PIN);
+  DDRD |= 0b11100000;
   
-  //We set the 0th register to 1 cos the last two registers being 01 makes the
-  //interrupt trigger on any change in the pin.
-  EICRA |= (1 << ISC00);
-  EICRA |= (1 << ISC10);
+  //We set the 0th register to 1 so that interrupts are generated
+  //by any change in INT0
+  //We set the 2nd register to 1 for the same reason except this
+  //effects INT1
+  EICRA |= 0b00000101;
   
   //Enables interrupts for INT0(D2) and INT1(D3)
-  EIMSK |= (1 << INT0);
-  EIMSK |= (1 << INT1);
+  EIMSK |= 0b00000011;
+  
   //sets bit 7 in the SREG register
   sei();
   
-  
   //enable interrupts for port D
   PCICR |= 0b00000100;
-  
-  
-  //setting the led to output
-  DDRD |= (1 << LED_PIN3);
-  
   
   //Enabling pin 4 for interrupts PCINT20 = pin 4
   PCMSK2 |= (1 << PCINT20);
